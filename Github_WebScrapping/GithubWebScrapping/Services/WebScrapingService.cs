@@ -60,8 +60,15 @@ namespace GithubWebScraping.Services
 
                 foreach (var item in listTrItems)
                 {
-                    var nodeFolder = item.Descendants("a")
-                        .Where(node => node.GetAttributeValue("class", "").Equals("js-navigation-open ")).First();
+                    var descendants = item.Descendants("a").ToList();
+                    if (descendants == null || descendants.Count == 0)
+                        continue;
+                    var listNodeFolder = item.Descendants("a")
+                        .Where(node => node.GetAttributeValue("class", "").Equals("js-navigation-open ")).ToList();
+                    if (listNodeFolder == null || listNodeFolder.Count == 0)
+                        continue;
+
+                    var nodeFolder = listNodeFolder.First();
                     string fileLink = nodeFolder.GetAttributeValue("href", "");
                     string urlBase = "https://github.com";
                     var htmlDoc = OpenLink(urlBase + fileLink);

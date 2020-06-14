@@ -26,9 +26,10 @@ namespace GithubWebScrapping.Controllers
         }
 
         [HttpGet]
-        public String Get()
+        public ActionResult<String> Get(string url)
         {
-            string url = "https://github.com/Jay-Robot/SD";
+            if (string.IsNullOrEmpty(url))
+                return NotFound();
             WebScrapingService webScrapingService = new WebScrapingService();
             var dict = webScrapingService.StartScrap(url);
             
