@@ -5,21 +5,22 @@ using System.Threading.Tasks;
 using GithubWebScraping.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace GithubWebScrapping.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class GithubScraperController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<GithubScraperController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public GithubScraperController(ILogger<GithubScraperController> logger)
         {
             _logger = logger;
         }
@@ -30,8 +31,8 @@ namespace GithubWebScrapping.Controllers
             string url = "https://github.com/Jay-Robot/SD";
             WebScrapingService webScrapingService = new WebScrapingService();
             var dict = webScrapingService.StartScrap(url);
-
-            return dict.ToString();
+            
+            return JsonConvert.SerializeObject(dict);
         }
     }
 }

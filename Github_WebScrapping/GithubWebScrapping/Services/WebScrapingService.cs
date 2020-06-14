@@ -77,13 +77,23 @@ namespace GithubWebScraping.Services
                         string fileName = strongFinalPath.InnerText;
                         var listFileType = fileName.Split(".");
                         string fileType = "";
-                        if (listFileType != null && listFileType.Length > 0)
+                        if (listFileType != null && listFileType.Length > 1)
                             fileType = listFileType.Last();
 
                         double nLines = 0;
 
                         if (listTextLines.Length > 1)
-                            nLines = double.Parse(listTextLines.First().Split().First());
+                        {
+                            var isNumeric = double.TryParse(listTextLines.First().Split().First(), out _);
+                            if (isNumeric)
+                            {
+                                nLines = double.Parse(listTextLines.First().Split().First());
+                            }
+                            else if(listTextLines.First() == "executable file")
+                            {
+                                fileType = listTextLines.First();
+                            }
+                        }
 
                         string sBytes = Consts.ConvertToBytes(listTextLines.Last());
                         double nBytes = double.Parse(sBytes.Split().First());
@@ -92,6 +102,7 @@ namespace GithubWebScraping.Services
                         if (dict.ContainsKey(blobFile.Extension))
                         {
                             dict[blobFile.Extension].Lines += blobFile.NumberLines;
+                            dict[blobFile.Extension].Bytes += blobFile.NumberBytes;
                         }
                         else
                         {
