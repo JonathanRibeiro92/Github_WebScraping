@@ -13,16 +13,12 @@ namespace GithubWebScrapping.Controllers
     [Route("[controller]")]
     public class GithubScraperController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
 
-        private readonly ILogger<GithubScraperController> _logger;
+        private readonly IWebScrapingService _service;
 
-        public GithubScraperController(ILogger<GithubScraperController> logger)
+        public GithubScraperController(IWebScrapingService service)
         {
-            _logger = logger;
+            _service = service;
         }
 
         [HttpGet]
@@ -30,8 +26,8 @@ namespace GithubWebScrapping.Controllers
         {
             if (string.IsNullOrEmpty(url))
                 return NotFound();
-            WebScrapingService webScrapingService = new WebScrapingService();
-            var dict = webScrapingService.StartScrap(url);
+            //WebScrapingService webScrapingService = new WebScrapingService();
+            var dict = _service.StartScrap(url);
             
             return JsonConvert.SerializeObject(dict);
         }

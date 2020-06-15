@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GithubWebScraping.Services
 {
-    public class WebScrapingService
+    public class WebScrapingService : IWebScrapingService
     {
         public Dictionary<string, TotalByExtension> dict = new Dictionary<string, TotalByExtension>();
         public Dictionary<string, TotalByExtension> StartScrap(string url)
